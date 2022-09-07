@@ -15,13 +15,13 @@ class Obito {
   @HiveField(2)
   String cause;
 
-  @HiveField(3)
-  String data;
+  // @HiveField(3)
+  // String data;
 
   Obito({
     this.id,
     this.date,
     this.cause,
-    this.data,
+    // this.data,
   });
 }

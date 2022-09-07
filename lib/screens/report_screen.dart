@@ -6,12 +6,15 @@ import 'package:hiperdia/models/Exam.dart';
 import 'package:hiperdia/models/Hospitalization.dart';
 import 'package:hiperdia/models/Obito.dart';
 import 'package:hiperdia/models/Patient.dart';
+import 'package:hiperdia/models/PatientReport.dart';
 import 'package:hiperdia/models/Ubs.dart';
+import 'package:hiperdia/screens/patient_report_list_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ReportScreen extends StatelessWidget {
   const ReportScreen({Key key}) : super(key: key);
@@ -34,6 +37,12 @@ class ReportScreen extends StatelessWidget {
     Box<Ubs> ubsBox = Hive.box<Ubs>('ubs');
     Box<Appointment> appointmentBox = Hive.box<Appointment>('appointments');
     Box<Exam> examBox = Hive.box<Exam>('exams');
+    Box<PatientReport> patientReportBox =
+        Hive.box<PatientReport>('patient_reports');
+
+    void addReport(String name, String path, DateTime date) {
+      patientReportBox.add(PatientReport(name: name, path: path, date: date));
+    }
 
     void reportHipertensos() async {
       hipertensos.clear();
@@ -118,21 +127,42 @@ class ReportScreen extends StatelessWidget {
           },
         ),
       ); // Pageageage
-      //final output = await getExternalStorageDirectory();
-      final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/hipertensos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
-      await file.writeAsBytes(await pdf.save());
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Relatório gerado com sucesso',
-            textAlign: TextAlign.center,
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+        //add more permission to request here.
+      ].request();
+
+      if (statuses[Permission.storage].isGranted) {
+        //final output = await getExternalStorageDirectory();
+        final output = await DownloadsPathProvider.downloadsDirectory;
+        String path =
+            "${output.path}/hipertensos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+        final file = File(path);
+        print(
+            "${output.path}/hipertensos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+        await file.writeAsBytes(await pdf.save());
+        addReport('Hipertensos', path, DateTime.now());
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Relatório gerado com sucesso',
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Colors.green,
           ),
-          backgroundColor: Colors.green,
-        ),
-      );
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Sem permissão para gerar o relatório',
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
 
     void reportDiabeticos() async {
@@ -204,10 +234,11 @@ class ReportScreen extends StatelessWidget {
       ); // Pageageage
       //final output = await getExternalStorageDirectory();
       final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/diabeticos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+      String path =
+          "${output.path}/diabeticos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-
+      addReport('Diabéticos', path, DateTime.now());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -289,10 +320,11 @@ class ReportScreen extends StatelessWidget {
       ); // Pageageage
       //final output = await getExternalStorageDirectory();
       final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/diabeticosEhipertensos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+      String path =
+          "${output.path}/diabeticosEhipertensos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-
+      addReport('Diabéticos e Hipertensos', path, DateTime.now());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -429,10 +461,11 @@ class ReportScreen extends StatelessWidget {
       ); // Pageageage
       //final output = await getExternalStorageDirectory();
       final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/obitos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+      String path =
+          "${output.path}/obitos-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-
+      addReport('Óbitos', path, DateTime.now());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -568,10 +601,11 @@ class ReportScreen extends StatelessWidget {
       ); // Pageageage
       //final output = await getExternalStorageDirectory();
       final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/consultas-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+      String path =
+          "${output.path}/consultas-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-
+      addReport('Ubs', path, DateTime.now());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -637,10 +671,11 @@ class ReportScreen extends StatelessWidget {
       ); // Pageageage
       //final output = await getExternalStorageDirectory();
       final output = await DownloadsPathProvider.downloadsDirectory;
-      final file = File(
-          "${output.path}/exames-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf");
+      String path =
+          "${output.path}/exames-${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}-${DateTime.now().millisecond}.pdf";
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-
+      addReport('Exames', path, DateTime.now());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -654,9 +689,22 @@ class ReportScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gerar relatórios"),
-        centerTitle: true,
-      ),
+          title: const Text("Gerar relatórios"),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 350),
+                      pageBuilder: (context, _, __) =>
+                          const PatientReportScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.folder)),
+          ]),
       body: ListView(children: [
         GestureDetector(
           onTap: () async {
@@ -981,8 +1029,8 @@ obitoDescription(Obito o, String patientName) {
         pw.SizedBox(height: 10),
         pw.Text('Causa: ${o.cause}'),
         pw.SizedBox(height: 10),
-        pw.Text('Dados: ${o.data}'),
-        pw.SizedBox(height: 10),
+        // pw.Text('Dados: ${o.data}'),
+        // pw.SizedBox(height: 10),
       ]);
 }
 

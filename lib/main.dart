@@ -6,6 +6,7 @@ import 'package:hiperdia/models/Exam.dart';
 import 'package:hiperdia/models/Hospitalization.dart';
 import 'package:hiperdia/models/Obito.dart';
 import 'package:hiperdia/models/Patient.dart';
+import 'package:hiperdia/models/PatientReport.dart';
 import 'package:hiperdia/models/Ubs.dart';
 import 'package:hiperdia/screens/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -18,6 +19,7 @@ const String examsBoxName = "exams";
 const String appointmentBoxName = "appointments";
 const String hospitalizationBoxName = "hospitalizations";
 const String ubsBoxName = "ubs";
+const String patientReportBoxName = "patient_reports";
 
 void main() async {
   await Hive.initFlutter();
@@ -28,6 +30,7 @@ void main() async {
   Hive.registerAdapter<Appointment>(AppointmentAdapter());
   Hive.registerAdapter<Hospitalization>(HospitalizationAdapter());
   Hive.registerAdapter<Ubs>(UbsAdapter());
+  Hive.registerAdapter<PatientReport>(PatientReportAdapter());
   await Hive.openBox<Agent>(agentsBoxName);
   await Hive.openBox<Patient>(patientsBoxName);
   await Hive.openBox<Obito>(obitosBoxName);
@@ -35,6 +38,7 @@ void main() async {
   await Hive.openBox<Appointment>(appointmentBoxName);
   await Hive.openBox<Hospitalization>(hospitalizationBoxName);
   await Hive.openBox<Ubs>(ubsBoxName);
+  await Hive.openBox<PatientReport>(patientReportBoxName);
   runApp(const MyApp());
 }
 

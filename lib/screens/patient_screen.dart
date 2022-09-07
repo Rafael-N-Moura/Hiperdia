@@ -301,64 +301,64 @@ class _PatientScreenState extends State<PatientScreen> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 25, vertical: 10),
-                                          child: TextFormField(
-                                            focusNode: myfocusNode2,
-                                            validator: (data) {
-                                              if (data.isEmpty)
-                                                return 'Campo obrigatório';
-                                              return null;
-                                            },
-                                            onChanged: (data) {
-                                              setState(() {
-                                                obito.data = data;
-                                              });
-                                            },
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  'Informações sobre o óbito',
-                                              label: const Text('Dados'),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25.0),
-                                                borderSide: const BorderSide(
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25.0),
-                                                borderSide: const BorderSide(
-                                                  color: Colors.blueGrey,
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              focusedErrorBorder:
-                                                  OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25.0),
-                                                borderSide: const BorderSide(
-                                                  color: Colors.red,
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              errorBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25.0),
-                                                borderSide: const BorderSide(
-                                                  color: Colors.red,
-                                                  width: 2.0,
-                                                ),
-                                              ),
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 20),
-                                            ),
-                                          ),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.symmetric(
+                                        //       horizontal: 25, vertical: 10),
+                                        //   child: TextFormField(
+                                        //     focusNode: myfocusNode2,
+                                        //     validator: (data) {
+                                        //       if (data.isEmpty)
+                                        //         return 'Campo obrigatório';
+                                        //       return null;
+                                        //     },
+                                        //     onChanged: (data) {
+                                        //       setState(() {
+                                        //         obito.data = data;
+                                        //       });
+                                        //     },
+                                        //     decoration: InputDecoration(
+                                        //       hintText:
+                                        //           'Informações sobre o óbito',
+                                        //       label: const Text('Dados'),
+                                        //       focusedBorder: OutlineInputBorder(
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(25.0),
+                                        //         borderSide: const BorderSide(
+                                        //           color: Colors.blue,
+                                        //         ),
+                                        //       ),
+                                        //       enabledBorder: OutlineInputBorder(
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(25.0),
+                                        //         borderSide: const BorderSide(
+                                        //           color: Colors.blueGrey,
+                                        //           width: 2.0,
+                                        //         ),
+                                        //       ),
+                                        //       focusedErrorBorder:
+                                        //           OutlineInputBorder(
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(25.0),
+                                        //         borderSide: const BorderSide(
+                                        //           color: Colors.red,
+                                        //           width: 2.0,
+                                        //         ),
+                                        //       ),
+                                        //       errorBorder: OutlineInputBorder(
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(25.0),
+                                        //         borderSide: const BorderSide(
+                                        //           color: Colors.red,
+                                        //           width: 2.0,
+                                        //         ),
+                                        //       ),
+                                        //       contentPadding:
+                                        //           const EdgeInsets.symmetric(
+                                        //               horizontal: 20,
+                                        //               vertical: 20),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                     actions: <Widget>[
@@ -371,7 +371,7 @@ class _PatientScreenState extends State<PatientScreen> {
                                         child: Text("Sim"),
                                         onPressed: () async {
                                           if (obito.date != null &&
-                                              obito.data != null &&
+                                              // obito.data != null &&
                                               obito.cause != null) {
                                             obito.id = widget.curPatient.cpf;
                                             Box<Obito> obitos =
@@ -911,17 +911,17 @@ class _PatientScreenState extends State<PatientScreen> {
                                   "Data: ${Hive.box<Obito>('obitos').get(widget.curPatient.cpf).date}"),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 5),
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, top: 5, bottom: 15),
                               child: Text(
                                   'Causa: ${Hive.box<Obito>('obitos').get(widget.curPatient.cpf).cause}'),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 16, right: 16, top: 5, bottom: 8),
-                              child: Text(
-                                  'Dados: ${Hive.box<Obito>('obitos').get(widget.curPatient.cpf).data}'),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(
+                            //       left: 16, right: 16, top: 5, bottom: 8),
+                            //   child: Text(
+                            //       'Dados: ${Hive.box<Obito>('obitos').get(widget.curPatient.cpf).data}'),
+                            // ),
                           ],
                         ),
                       ],
